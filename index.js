@@ -7,7 +7,9 @@ app.use(cors());
 app.use(express.json());
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 app.get("/", (req, res) => {
   res.json({ status: "AdGuru AI Backend is running!" });
 });
