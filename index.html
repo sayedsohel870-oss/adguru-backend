@@ -1,1 +1,497 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AdGuru AI — One Prompt. Full Campaign.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f7f3ee;--cream2:#efe9e0;--cream3:#e5ddd0;
+  --ink:#1c1814;--ink2:#3d352c;--ink3:#7a6e62;--ink4:#a89f95;
+  --rust:#b84c2a;--rust2:#d4633d;--rust-pale:#fdf0eb;--rust-border:#f0c4b0;
+  --gold:#9a7c3a;--gold-pale:#fdf8eb;
+  --sage:#3d6b52;--sage-pale:#edf5f0;--sage-mid:#b8d8c8;
+  --blue:#2c5282;--blue-pale:#ebf2fb;
+  --purple:#5b4a9e;--purple-pale:#f0eefb;
+  --r:14px;--rs:8px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--cream);color:var(--ink);font-family:'Outfit',sans-serif;font-size:14px;line-height:1.6;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:0}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:rgba(247,243,238,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--cream3);padding:0 28px;height:58px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;color:var(--ink);display:flex;align-items:center;gap:9px}
+.logo em{font-style:italic;color:var(--rust)}
+.logo-dot{width:8px;height:8px;background:var(--rust);border-radius:50%;animation:breathe 2.5s ease-in-out infinite}
+@keyframes breathe{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.5);opacity:.3}}
+.pill{font-size:11px;font-weight:500;padding:3px 11px;border-radius:20px}
+.pill-rust{background:var(--rust-pale);color:var(--rust);border:1px solid var(--rust-border)}
+.pill-sage{background:var(--sage-pale);color:var(--sage);border:1px solid var(--sage-mid)}
+
+/* LAYOUT */
+.app{display:grid;grid-template-columns:400px 1fr;min-height:calc(100vh - 58px);position:relative;z-index:1}
+
+/* LEFT */
+.left{border-right:1px solid var(--cream3);background:#fff;overflow-y:auto}
+.left-inner{padding:26px;display:flex;flex-direction:column;gap:16px}
+.hero{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;line-height:1.2;letter-spacing:-.5px}
+.hero em{font-style:italic;color:var(--rust)}
+.hero-sub{font-size:12px;color:var(--ink3);line-height:1.6}
+
+.field{display:flex;flex-direction:column;gap:5px}
+.field-label{font-size:10px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em}
+textarea,select,input[type=text]{font-family:'Outfit',sans-serif;font-size:13px;background:var(--cream);color:var(--ink);border:1px solid var(--cream3);border-radius:var(--rs);padding:9px 12px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+textarea:focus,select:focus,input:focus{border-color:var(--rust);box-shadow:0 0 0 3px rgba(184,76,42,.07);background:#fff}
+textarea{resize:none}
+select{-webkit-appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%237a6e62' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center;padding-right:32px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.quick-row{display:flex;flex-wrap:wrap;gap:6px}
+.qchip{font-size:11px;font-family:'Outfit',sans-serif;padding:5px 10px;border-radius:20px;border:1px solid var(--cream3);background:var(--cream);color:var(--ink3);cursor:pointer;transition:all .15s}
+.qchip:hover{border-color:var(--rust);color:var(--rust);background:var(--rust-pale)}
+.plat-row{display:flex;flex-wrap:wrap;gap:6px}
+.plat-chip{font-size:12px;font-family:'Outfit',sans-serif;padding:6px 12px;border-radius:20px;border:1px solid var(--cream3);background:var(--cream);color:var(--ink3);cursor:pointer;transition:all .15s}
+.plat-chip.on{border-color:var(--rust);background:var(--rust-pale);color:var(--rust)}
+.gen-btn{width:100%;padding:14px;background:var(--rust);color:#fff;border:none;border-radius:var(--rs);font-family:'Playfair Display',serif;font-size:17px;font-weight:700;font-style:italic;cursor:pointer;transition:all .2s;box-shadow:0 4px 18px rgba(184,76,42,.22)}
+.gen-btn:hover{background:var(--rust2);transform:translateY(-1px);box-shadow:0 8px 24px rgba(184,76,42,.28)}
+.gen-btn:disabled{background:var(--ink4);box-shadow:none;cursor:not-allowed;transform:none}
+.err-msg{background:#fdf0eb;border:1px solid #f5c4b0;color:var(--rust);font-size:12px;padding:9px 13px;border-radius:var(--rs)}
+
+/* RIGHT */
+.right{overflow-y:auto;background:var(--cream)}
+.empty{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:48px;text-align:center;color:var(--ink4)}
+.empty-icon{width:70px;height:70px;background:#fff;border:1px solid var(--cream3);border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:28px}
+.empty h3{font-family:'Playfair Display',serif;font-size:20px;color:var(--ink);opacity:.3}
+.empty p{font-size:12px;max-width:200px}
+
+/* LOADING */
+.loading{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:48px;text-align:center}
+.load-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--ink)}
+.load-title span{color:var(--rust);font-style:italic}
+.load-sub{font-size:12px;color:var(--ink3)}
+.steps-list{display:flex;flex-direction:column;gap:9px;text-align:left;min-width:220px}
+.step-item{display:flex;align-items:center;gap:9px;font-size:13px;color:var(--ink4);transition:all .35s}
+.step-item.active{color:var(--ink)}
+.step-item.done{color:var(--sage)}
+.step-dot{width:7px;height:7px;border-radius:50%;background:var(--cream3);flex-shrink:0;transition:all .35s}
+.step-item.active .step-dot{background:var(--rust);box-shadow:0 0 0 3px rgba(184,76,42,.15);animation:breathe 1.2s ease-in-out infinite}
+.step-item.done .step-dot{background:var(--sage);box-shadow:none;animation:none}
+
+/* RESULTS */
+.results{padding:26px;display:flex;flex-direction:column;gap:14px}
+.back-btn{font-size:12px;color:var(--ink3);background:none;border:none;cursor:pointer;font-family:'Outfit',sans-serif;padding:0;margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.back-btn:hover{color:var(--rust)}
+.rcard{background:#fff;border:1px solid var(--cream3);border-radius:var(--r);overflow:hidden;animation:slideUp .35s ease-out both}
+@keyframes slideUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rcard-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--cream3);background:var(--cream)}
+.rcard-label{display:flex;align-items:center;gap:7px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.09em}
+.rdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.rcard-body{padding:16px}
+
+/* SCORE */
+.score-row{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.score-row:last-child{margin-bottom:0}
+.score-lbl{font-size:12px;color:var(--ink3);min-width:118px}
+.score-track{flex:1;height:5px;background:var(--cream2);border-radius:10px;overflow:hidden}
+.score-fill{height:100%;border-radius:10px}
+.score-num{font-size:12px;font-weight:600;min-width:28px;text-align:right}
+
+/* STRATEGY */
+.strat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.strat-cell{background:var(--cream);border-radius:var(--rs);padding:9px 11px}
+.strat-cell-l{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink4);margin-bottom:3px}
+.strat-cell-v{font-size:12px;font-weight:500;color:var(--ink)}
+.angle-box{padding:10px 13px;background:var(--gold-pale);border:1px solid #e8d9a8;border-radius:var(--rs);font-size:12px;color:#6b4f1a;line-height:1.6}
+
+/* TARGETING */
+.ttable{width:100%;border-collapse:collapse}
+.ttable td{padding:7px 0;font-size:12px;border-bottom:1px solid var(--cream2)}
+.ttable tr:last-child td{border:none}
+.ttable .tl{color:var(--ink3);width:36%}
+.ttable .tv{color:var(--ink);font-weight:500}
+
+/* COMPETITORS */
+.comp-item{background:var(--cream);border-radius:var(--rs);padding:10px 12px;margin-bottom:7px;display:flex;gap:10px}
+.comp-item:last-child{margin-bottom:0}
+.comp-rank{font-family:'Playfair Display',serif;font-size:17px;font-weight:900;color:var(--cream3);min-width:20px;line-height:1}
+.comp-name{font-size:12px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.comp-info{font-size:11px;color:var(--ink3);line-height:1.55}
+.comp-angle{font-size:11px;color:var(--gold);margin-top:4px;font-style:italic}
+
+/* AD COPIES */
+.adcopy-card{background:var(--cream);border-radius:var(--rs);padding:13px;margin-bottom:8px;position:relative}
+.adcopy-card:last-child{margin-bottom:0}
+.adcopy-plat{font-size:9px;text-transform:uppercase;letter-spacing:.08em;padding:2px 8px;border-radius:5px;display:inline-block;margin-bottom:8px;background:var(--rust-pale);color:var(--rust);border:1px solid var(--rust-border)}
+.adcopy-h{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--ink);line-height:1.3;margin-bottom:6px;padding-right:50px}
+.adcopy-b{font-size:12px;color:var(--ink3);line-height:1.65;margin-bottom:8px}
+.adcopy-cta{font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;background:var(--sage-pale);color:var(--sage);display:inline-block}
+.cp-btn{position:absolute;top:11px;right:11px;font-size:10px;padding:4px 9px;border-radius:6px;border:1px solid var(--cream3);background:#fff;color:var(--ink3);cursor:pointer;font-family:'Outfit',sans-serif;transition:all .15s}
+.cp-btn:hover{border-color:var(--rust);color:var(--rust)}
+.cp-btn.ok{border-color:var(--sage);color:var(--sage)}
+
+/* IMAGE PROMPTS */
+.imgp-card{background:var(--purple-pale);border:1px solid #d8d0f5;border-radius:var(--rs);padding:11px 13px;margin-bottom:8px}
+.imgp-card:last-child{margin-bottom:0}
+.imgp-type{font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--purple);margin-bottom:5px;font-weight:600}
+.imgp-text{font-size:11px;color:#5b4a7a;font-style:italic;line-height:1.65;margin-bottom:8px}
+
+/* BUDGET */
+.bbar{display:flex;gap:3px;border-radius:6px;overflow:hidden;height:8px;margin-bottom:13px}
+.bseg{height:100%}
+.brow{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 0;border-bottom:1px solid var(--cream2)}
+.brow:last-child{border:none}
+.brow-l{display:flex;align-items:center;gap:7px;color:var(--ink3)}
+.bclr{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.brow-v{font-weight:500}
+
+/* ACTION PLAN */
+.plan-row{display:flex;gap:11px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--cream2);font-size:12px}
+.plan-row:last-child{border:none}
+.plan-num{width:21px;height:21px;border-radius:50%;background:var(--rust-pale);color:var(--rust);font-size:10px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.plan-txt{color:var(--ink3);line-height:1.6}
+
+/* COPY ALL + EXPORT */
+.copy-all-btn{width:100%;padding:12px;border-radius:var(--rs);border:1.5px solid var(--cream3);background:#fff;color:var(--ink);font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:7px}
+.copy-all-btn:hover{border-color:var(--rust);color:var(--rust)}
+.export-bar{padding:14px 26px;border-top:1px solid var(--cream3);background:#fff;display:flex;gap:8px;position:sticky;bottom:0;z-index:10}
+.exp-btn{flex:1;padding:10px;border-radius:var(--rs);border:1px solid var(--cream3);background:var(--cream);color:var(--ink3);font-family:'Outfit',sans-serif;font-size:12px;cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+.exp-btn:hover{border-color:var(--ink3);color:var(--ink)}
+.exp-btn.primary{background:var(--rust);border-color:var(--rust);color:#fff;font-weight:500;box-shadow:0 3px 12px rgba(184,76,42,.2)}
+.exp-btn.primary:hover{background:var(--rust2)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-thumb{background:var(--cream3);border-radius:4px}
+
+@media(max-width:768px){
+  .app{grid-template-columns:1fr}
+  .right{min-height:60vh}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-dot"></div>
+    Ad<em>Guru</em>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <span class="pill pill-rust">India-First</span>
+    <span class="pill pill-sage">AI Powered</span>
+  </div>
+</header>
+
+<div class="app">
+
+  <!-- LEFT: INPUT -->
+  <div class="left">
+    <div class="left-inner">
+      <div>
+        <h1 class="hero">One prompt.<br><em>Full campaign.</em></h1>
+        <p class="hero-sub" style="margin-top:5px">Research → Strategy → Ads → Images — sab ek click mein</p>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Apna product / service describe karo</label>
+        <textarea id="prompt" rows="4" placeholder="e.g. Main Delhi mein organic skincare brand chalata hoon, 22-35 saal ki working women ko target karna hai, budget ₹5000/month hai..."></textarea>
+      </div>
+
+      <div>
+        <label class="field-label" style="margin-bottom:7px">Quick Examples</label>
+        <div class="quick-row">
+          <button class="qchip" onclick="qf('jewellery')">👗 Jewellery</button>
+          <button class="qchip" onclick="qf('restaurant')">🍽️ Restaurant</button>
+          <button class="qchip" onclick="qf('coaching')">📚 Coaching</button>
+          <button class="qchip" onclick="qf('salon')">💇 Salon</button>
+          <button class="qchip" onclick="qf('realestate')">🏠 Real Estate</button>
+          <button class="qchip" onclick="qf('fitness')">💪 Fitness</button>
+        </div>
+      </div>
+
+      <div class="g2">
+        <div class="field">
+          <label class="field-label">Monthly Budget</label>
+          <select id="budget">
+            <option value="1000">₹500 – ₹2,000</option>
+            <option value="3000" selected>₹2,000 – ₹5,000</option>
+            <option value="10000">₹5,000 – ₹15,000</option>
+            <option value="30000">₹15,000 – ₹50,000</option>
+            <option value="100000">₹50,000+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Campaign Goal</label>
+          <select id="goal">
+            <option value="leads">Lead Generation</option>
+            <option value="sales">Direct Sales</option>
+            <option value="brand">Brand Awareness</option>
+            <option value="traffic">Website Traffic</option>
+          </select>
+        </div>
+        <div class="field">
+          <label class="field-label">Target Location</label>
+          <input type="text" id="location" value="Pan India" placeholder="e.g. Mumbai, Delhi">
+        </div>
+        <div class="field">
+          <label class="field-label">Industry</label>
+          <select id="industry">
+            <option value="ecommerce">E-Commerce / D2C</option>
+            <option value="food">Food & Restaurant</option>
+            <option value="fashion">Fashion & Apparel</option>
+            <option value="realestate">Real Estate</option>
+            <option value="education">Education / EdTech</option>
+            <option value="beauty">Beauty & Wellness</option>
+            <option value="health">Health & Fitness</option>
+            <option value="tech">Tech / SaaS</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="field-label">Platforms</label>
+        <div class="plat-row">
+          <button class="plat-chip on" onclick="togP(this,'meta')">📘 Meta/FB</button>
+          <button class="plat-chip on" onclick="togP(this,'instagram')">📷 Instagram</button>
+          <button class="plat-chip" onclick="togP(this,'youtube')">▶️ YouTube</button>
+          <button class="plat-chip" onclick="togP(this,'google')">🔍 Google Ads</button>
+          <button class="plat-chip" onclick="togP(this,'whatsapp')">💬 WhatsApp</button>
+        </div>
+      </div>
+
+      <div id="err-box" style="display:none" class="err-msg"></div>
+
+      <button class="gen-btn" id="genbtn" onclick="generate()">
+        ⚡ Generate Full Campaign
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: OUTPUT -->
+  <div class="right" id="right">
+
+    <div class="empty" id="empty-state">
+      <div class="empty-icon">🎯</div>
+      <h3>Campaign yahan dikhegi</h3>
+      <p>Product describe karo, platform chunno — ek click mein poori agency ka kaam</p>
+    </div>
+
+    <div class="loading" id="loading-state" style="display:none">
+      <div class="load-title">AI research kar rahi hai<span>...</span></div>
+      <p class="load-sub">Competitors dhundh rahi hoon, targeting bana rahi hoon</p>
+      <div class="steps-list">
+        <div class="step-item" id="st0"><div class="step-dot"></div>Market research</div>
+        <div class="step-item" id="st1"><div class="step-dot"></div>Competitor analysis</div>
+        <div class="step-item" id="st2"><div class="step-dot"></div>Audience targeting</div>
+        <div class="step-item" id="st3"><div class="step-dot"></div>Ad copies generate</div>
+        <div class="step-item" id="st4"><div class="step-dot"></div>Budget strategy</div>
+        <div class="step-item" id="st5"><div class="step-dot"></div>Image prompts</div>
+      </div>
+    </div>
+
+    <div id="result-state" style="display:none"></div>
+  </div>
+</div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────
+const BACKEND = 'https://adguru-backend-production.up.railway.app';
+
+// ── STATE ───────────────────────────────────────────
+var selPlats = ['meta','instagram'];
+var adCopies = [], imgPrompts = [];
+var stepTimer, stepIdx = 0;
+
+const PC = {
+  meta:'#378ADD', instagram:'#c8502a', youtube:'#e24b4a',
+  google:'#3d6b52', testing:'#5b4a9e', whatsapp:'#128C7E'
+};
+const SCORES = [
+  {l:'Targeting Accuracy', v:88, c:'#3d6b52'},
+  {l:'Creative Potential',  v:83, c:'#5b4a9e'},
+  {l:'ROI Probability',     v:80, c:'#b84c2a'},
+  {l:'Market Fit',          v:92, c:'#2c5282'},
+];
+const QUICK = {
+  jewellery: 'Main Delhi mein handmade silver jewellery ki online shop chalati hoon. 22-35 saal ki working women jo ethnic wear pasand karti hain unhe target karna hai. Budget Rs 3000/month, Instagram aur Meta pe ads chahiye.',
+  restaurant: 'Pune mein family restaurant hai North Indian aur Chinese. Weekend specials aur home delivery promote karni hai. 5km radius mein families target. Budget Rs 4000/month.',
+  coaching:   'Online UPSC coaching Hindi medium. Tier 2-3 cities ke 22-28 saal ke students. Free demo se leads chahiye. Budget Rs 8000/month.',
+  salon:      'Mumbai Andheri mein premium unisex salon. Bridal makeup, keratin treatment promote karna hai. 20-38 saal ki women. Budget Rs 3000/month.',
+  realestate: 'Noida mein 2BHK aur 3BHK flats Rs 45-70 lakh range mein. First-time buyers target. Budget Rs 20000/month Google aur Meta pe.',
+  fitness:    'Online fitness coaching for women — weight loss aur postpartum recovery. 25-40 saal ki housewives aur working moms. Budget Rs 5000/month.',
+};
+
+function qf(k){ document.getElementById('prompt').value = QUICK[k]; }
+
+function togP(btn, p){
+  btn.classList.toggle('on');
+  selPlats = selPlats.includes(p) ? selPlats.filter(x=>x!==p) : [...selPlats, p];
+}
+
+function showPanel(id){
+  ['empty-state','loading-state','result-state'].forEach(x=>{
+    document.getElementById(x).style.display = x===id ? '' : 'none';
+  });
+}
+
+function startSteps(){
+  stepIdx = 0;
+  for(var i=0;i<6;i++) document.getElementById('st'+i).className='step-item';
+  document.getElementById('st0').classList.add('active');
+  stepTimer = setInterval(function(){
+    if(stepIdx < 5){
+      document.getElementById('st'+stepIdx).className='step-item done';
+      stepIdx++;
+      document.getElementById('st'+stepIdx).classList.add('active');
+    } else clearInterval(stepTimer);
+  }, 950);
+}
+
+async function generate(){
+  var p = document.getElementById('prompt').value.trim();
+  var errBox = document.getElementById('err-box');
+  if(!p){ errBox.style.display='block'; errBox.textContent='Pehle apna product describe karo!'; return; }
+  errBox.style.display='none';
+  document.getElementById('genbtn').disabled = true;
+  showPanel('loading-state');
+  startSteps();
+
+  var payload = {
+    product:   p,
+    budget:    document.getElementById('budget').value,
+    goal:      document.getElementById('goal').value,
+    location:  document.getElementById('location').value,
+    industry:  document.getElementById('industry').value,
+    platforms: selPlats.join(', '),
+  };
+
+  try {
+    var resp = await fetch(BACKEND + '/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    var data = await resp.json();
+    if(!data.success) throw new Error(data.error || 'Failed');
+    clearInterval(stepTimer);
+    for(var i=0;i<6;i++) document.getElementById('st'+i).className='step-item done';
+    setTimeout(function(){ renderResult(data.data, parseInt(payload.budget)); }, 400);
+  } catch(e) {
+    clearInterval(stepTimer);
+    showPanel('empty-state');
+    document.getElementById('genbtn').disabled = false;
+    errBox.style.display = 'block';
+    errBox.textContent = 'Kuch error aaya — thodi der baad try karo.';
+  }
+}
+
+function renderResult(r, budgetNum){
+  adCopies   = r.ad_copies || [];
+  imgPrompts = r.image_prompts || [];
+  var bs     = r.budget_split || {};
+  var total  = Object.values(bs).reduce(function(a,b){return a+b;},0) || 100;
+  var s      = r.strategy || {};
+  var t      = r.targeting || {};
+
+  var bBar = Object.entries(bs).filter(function(e){return e[1];}).map(function(e){
+    return '<div class="bseg" style="width:'+e[1]+'%;background:'+(PC[e[0]]||'#aaa')+'"></div>';
+  }).join('');
+  var bRows = Object.entries(bs).filter(function(e){return e[1];}).map(function(e){
+    var amt = Math.round((e[1]/total)*budgetNum);
+    return '<div class="brow"><div class="brow-l"><div class="bclr" style="background:'+(PC[e[0]]||'#aaa')+'"></div>'+e[0].charAt(0).toUpperCase()+e[0].slice(1)+'</div><div class="brow-v" style="color:'+(PC[e[0]]||'#aaa')+'">&#8377;'+amt.toLocaleString('en-IN')+'<span style="color:var(--ink4);font-size:11px;font-weight:400"> ('+e[1]+'%)</span></div></div>';
+  }).join('');
+
+  var html = '<div class="results">';
+  html += '<button class="back-btn" onclick="goBack()">&#8592; Wapas Jao</button>';
+
+  // Score
+  html += '<div class="rcard" style="animation-delay:.0s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--sage)"></div><span style="color:var(--sage)">Campaign Score</span></div><span style="font-family:\'Playfair Display\',serif;font-size:22px;font-weight:900;color:var(--sage)">86<span style="font-size:11px;opacity:.4">/100</span></span></div><div class="rcard-body">';
+  SCORES.forEach(function(sc){
+    html += '<div class="score-row"><span class="score-lbl">'+sc.l+'</span><div class="score-track"><div class="score-fill" style="width:'+sc.v+'%;background:'+sc.c+'"></div></div><span class="score-num" style="color:'+sc.c+'">'+sc.v+'%</span></div>';
+  });
+  html += '</div></div>';
+
+  // Strategy
+  html += '<div class="rcard" style="animation-delay:.04s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--rust)"></div><span style="color:var(--rust)">Marketing Strategy</span></div></div><div class="rcard-body"><div class="strat-grid">';
+  [['Primary Platform',s.primary_platform,null],['Expected Reach',s.estimated_reach,null],['Expected Leads',s.expected_leads,'var(--sage)'],['Expected ROAS',s.expected_roas,'var(--rust)'],['Best Time',s.best_time,null],['Content Format',s.content_format,null]].forEach(function(x){
+    html += '<div class="strat-cell"><div class="strat-cell-l">'+x[0]+'</div><div class="strat-cell-v"'+(x[2]?' style="color:'+x[2]+'"':'')+'>'+( x[1]||'—')+'</div></div>';
+  });
+  html += '</div>'+(s.unique_angle?'<div class="angle-box">&#128161; <b style="color:var(--gold)">Winning Angle:</b> '+s.unique_angle+'</div>':'')+' </div></div>';
+
+  // Targeting
+  html += '<div class="rcard" style="animation-delay:.08s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--blue)"></div><span style="color:var(--blue)">Audience Targeting</span></div><span style="font-size:10px;color:var(--ink4)">Meta Ads mein copy karo</span></div><div class="rcard-body"><table class="ttable">';
+  [['Age',t.age],['Gender',t.gender],['Interests',(t.interests||[]).join(', ')],['Behaviors',(t.behaviors||[]).join(', ')],['Exclude',(t.exclude||[]).join(', ')],['Lookalike',t.lookalike]].forEach(function(x){
+    html += '<tr><td class="tl">'+x[0]+'</td><td class="tv">'+( x[1]||'—')+'</td></tr>';
+  });
+  html += '</table></div></div>';
+
+  // Competitors
+  html += '<div class="rcard" style="animation-delay:.12s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--gold)"></div><span style="color:var(--gold)">Competitor Analysis</span></div></div><div class="rcard-body">';
+  (r.competitors||[]).forEach(function(c,i){
+    html += '<div class="comp-item"><span class="comp-rank">'+(i+1)+'</span><div><div class="comp-name">'+c.name+'</div><div class="comp-info">'+c.their_angle+' — <em>Gap:</em> '+c.weakness+'</div><div class="comp-angle">&#8594; '+c.counter_strategy+'</div></div></div>';
+  });
+  html += '</div></div>';
+
+  // Ad copies
+  html += '<div class="rcard" style="animation-delay:.16s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--rust)"></div><span style="color:var(--rust)">Ready-to-Use Ad Copies</span></div><span style="font-size:10px;color:var(--ink4)">Copy karo, directly paste karo</span></div><div class="rcard-body">';
+  adCopies.forEach(function(c,i){
+    html += '<div class="adcopy-card"><button class="cp-btn" id="ab'+i+'" onclick="cpAd('+i+')">Copy</button><div class="adcopy-plat">'+c.platform+'</div><div class="adcopy-h">'+c.headline+'</div><div class="adcopy-b">'+c.body+'</div><span class="adcopy-cta">'+c.cta+' &#8594;</span></div>';
+  });
+  html += '</div></div>';
+
+  // Image prompts
+  html += '<div class="rcard" style="animation-delay:.2s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--purple)"></div><span style="color:var(--purple)">AI Image & Reel Prompts</span></div><span style="font-size:10px;color:var(--ink4)">Midjourney / DALL-E mein paste karo</span></div><div class="rcard-body">';
+  imgPrompts.forEach(function(ip,i){
+    html += '<div class="imgp-card"><div class="imgp-type">'+ip.type+'</div><div class="imgp-text">'+ip.prompt+'</div><button class="cp-btn" style="position:static;margin-top:4px" id="ib'+i+'" onclick="cpImg('+i+')">Copy Prompt</button></div>';
+  });
+  html += '</div></div>';
+
+  // Budget
+  html += '<div class="rcard" style="animation-delay:.24s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--sage)"></div><span style="color:var(--sage)">Budget Distribution</span></div></div><div class="rcard-body"><div class="bbar">'+bBar+'</div>'+bRows+'</div></div>';
+
+  // Action plan
+  html += '<div class="rcard" style="animation-delay:.28s"><div class="rcard-head"><div class="rcard-label"><div class="rdot" style="background:var(--blue)"></div><span style="color:var(--blue)">30-Day Action Plan</span></div></div><div class="rcard-body">';
+  (r.action_plan||[]).forEach(function(step,i){
+    html += '<div class="plan-row"><div class="plan-num">'+(i+1)+'</div><div class="plan-txt">'+step+'</div></div>';
+  });
+  html += '</div></div>';
+
+  html += '<button class="copy-all-btn" id="caBtn" onclick="cpAll()">&#128203; Saari Ad Copies Copy Karo</button>';
+  html += '</div>';
+  html += '<div class="export-bar"><button class="exp-btn" onclick="cpAll()">&#128203; Sab Copy Karo</button><button class="exp-btn primary">&#128640; Meta / Insta Ready!</button></div>';
+
+  document.getElementById('result-state').innerHTML = html;
+  showPanel('result-state');
+  document.getElementById('genbtn').disabled = false;
+}
+
+function goBack(){ showPanel('empty-state'); }
+
+function cpAd(i){
+  var c = adCopies[i];
+  var txt = c.platform+'\nHeadline: '+c.headline+'\n\n'+c.body+'\n\nCTA: '+c.cta;
+  navigator.clipboard.writeText(txt).catch(function(){});
+  var b = document.getElementById('ab'+i);
+  if(b){ b.textContent='Done! ✓'; b.classList.add('ok'); setTimeout(function(){ b.textContent='Copy'; b.classList.remove('ok'); },2000); }
+}
+
+function cpImg(i){
+  var ip = imgPrompts[i];
+  if(!ip) return;
+  navigator.clipboard.writeText(ip.prompt).catch(function(){});
+  var b = document.getElementById('ib'+i);
+  if(b){ b.textContent='Done! ✓'; b.classList.add('ok'); setTimeout(function(){ b.textContent='Copy Prompt'; b.classList.remove('ok'); },2000); }
+}
+
+function cpAll(){
+  var all = adCopies.map(function(c,i){
+    return '=== Ad '+(i+1)+': '+c.platform+' ===\nHeadline: '+c.headline+'\n\n'+c.body+'\n\nCTA: '+c.cta;
+  }).join('\n\n');
+  navigator.clipboard.writeText(all).catch(function(){});
+  var b = document.getElementById('caBtn');
+  if(b){ b.textContent='Done! Saari copies clipboard mein ✓'; setTimeout(function(){ b.textContent='Saari Ad Copies Copy Karo'; },2500); }
+}
+</script>
+</body>
+</html>
