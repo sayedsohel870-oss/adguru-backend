@@ -1,16 +1,16 @@
 const Anthropic = require("@anthropic-ai/sdk");
 const express = require("express");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
-app.get("/", (req, res) => {
+
+app.get("/health", (req, res) => {
   res.json({ status: "AdGuru AI Backend is running!" });
 });
 
@@ -54,6 +54,6 @@ Generate hyper-specific Indian ad campaign. Real Indian competitor names. Exact 
     res.status(500).json({ error: "Generation failed. Try again." });
   }
 });
-app.use(express.static('.'));
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`AdGuru backend running on port ${PORT}`));
