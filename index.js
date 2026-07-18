@@ -52,6 +52,6 @@ Generate hyper-specific Indian ad campaign. Real Indian competitor names. Exact 
     res.status(500).json({ error: "Generation failed. Try again." });
   }
 });
-
+app.use(express.static('.'));
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`AdGuru backend running on port ${PORT}`));
