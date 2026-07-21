@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const fetch = require("node-fetch");
 
 const app = express();
 app.use(cors());
@@ -50,13 +51,19 @@ JSON structure:
     );
 
     const data = await response.json();
+    
+    if (!data.candidates || !data.candidates[0]) {
+      console.error("Gemini error:", JSON.stringify(data));
+      return res.status(500).json({ error: "AI response error. Try again." });
+    }
+
     const raw = data.candidates[0].content.parts[0].text;
     const i0 = raw.indexOf("{");
     const i1 = raw.lastIndexOf("}");
     const json = JSON.parse(raw.substring(i0, i1 + 1));
     res.json({ success: true, data: json });
   } catch (err) {
-    console.error(err);
+    console.error("Error:", err);
     res.status(500).json({ error: "Generation failed. Try again." });
   }
 });
