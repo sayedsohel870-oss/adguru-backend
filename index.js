@@ -7,7 +7,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent
 
 app.get("/health", (req, res) => {
   res.json({ status: "AdGuru AI Backend is running!" });
